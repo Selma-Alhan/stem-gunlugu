@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sevgili STEM Günlüğü</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#e8f4ff,#f7fff0);margin:0;padding:18px;color:#263238}.container{max-width:850px;margin:0 auto;background:#fff;border-radius:24px;padding:26px;box-shadow:0 10px 30px rgba(0,0,0,.12)}h1{text-align:center;color:#24527a;margin:8px 0}.subtitle{text-align:center;color:#666;margin-bottom:22px}.day-btn{width:100%;padding:17px;margin:10px 0;border-radius:14px;border:3px solid;font-size:19px;font-weight:bold;text-align:left;background:white;cursor:pointer}.d1{border-color:#2f6fa3;color:#2f6fa3}.d2{border-color:#3c9c5a;color:#3c9c5a}.d3{border-color:#b64d3f;color:#b64d3f}.d4{border-color:#7b3fa3;color:#7b3fa3}.panel-btn,.back-btn,.save-btn,.csv-btn,.danger-btn{width:100%;padding:14px;border:0;border-radius:14px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:14px}.panel-btn{background:#fff;border:2px dashed #555;color:#444}.back-btn{background:#54616f;color:white}.save-btn{background:#2e8b57;color:white}.csv-btn{background:#2e8b57;color:white}.danger-btn{background:#b64d3f;color:white}label{font-weight:bold;display:block;margin-top:17px}input,textarea,select{width:100%;padding:13px;margin-top:7px;border:2px solid #ddd;border-radius:12px;font-size:16px}textarea{min-height:76px}.emoji-row,.star-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}.emoji,.star{font-size:28px;border:2px solid #ddd;border-radius:12px;padding:8px 12px;background:#fff;cursor:pointer}.selected{background:#fff4bf;border-color:#f4b400}.hidden{display:none!important}.record{border-left:6px solid #2f6fa3;background:#f9fbff;border-radius:12px;padding:17px;margin:15px 0}.badge{display:inline-block;background:#fff0c2;border:2px solid #f4b400;border-radius:20px;padding:6px 12px;margin-top:8px;font-weight:bold}.small{color:#777;font-size:13px}.top{display:flex;justify-content:space-between;align-items:center;gap:10px}.top h1{text-align:left}.top .csv-btn{width:auto;margin-top:0}.summary{background:#eef7ff;border-radius:14px;padding:12px;margin-top:14px;font-weight:bold}@media(max-width:600px){.container{padding:17px}h1{font-size:25px}.day-btn{font-size:16px}.top{display:block}.top .csv-btn{width:100%;margin-top:10px}}
+</style>
+</head>
+<body>
+<div class="container" id="home">
+  <h1>🚀🌱🔬 Sevgili STEM Günlüğü</h1>
+  <p class="subtitle">Bugünün keşfini, duygunu ve öğrendiğin bilgiyi yaz.</p>
+  <button class="day-btn d1" data-day="1" data-title="Gökyüzüne Yolculuk">1. Gün – Gökyüzüne Yolculuk ✨</button>
+  <button class="day-btn d2" data-day="2" data-title="Doğadan Öğreniyorum">2. Gün – Doğadan Öğreniyorum ✨</button>
+  <button class="day-btn d3" data-day="3" data-title="Kültürel Miras ve Su">3. Gün – Kültürel Miras ve Su ✨</button>
+  <button class="day-btn d4" data-day="4" data-title="Teknoloji, Dönüşüm ve Gelecek">4. Gün – Teknoloji, Dönüşüm ve Gelecek ✨</button>
+  <button class="panel-btn" id="openPanelBtn">⚙️ Öğretmen Paneli</button>
+</div>
+
+<div class="container hidden" id="formPage">
+  <h1 id="formTitle"></h1>
+  <form id="entryForm">
+    <input type="hidden" id="day" />
+    <input type="hidden" id="dayTitle" />
+    <input type="hidden" id="emotion" />
+    <input type="hidden" id="stars" />
+
+    <label>1. Adın Soyadın</label>
+    <input id="student" required placeholder="Adını ve soyadını yaz" />
+
+    <label>2. Bugünü 3 kelimeyle anlat</label>
+    <input id="words" required placeholder="Örn: merak, eğlence, roket" />
+
+    <label>3. Bugün öğrendiğim en ilginç bilgi</label>
+    <textarea id="info" required placeholder="Seni heyecanlandıran bilgi neydi?"></textarea>
+
+    <label>4. Beni en çok şaşırtan şey</label>
+    <textarea id="surprise" required placeholder="Hiç beklemediğin neyi fark ettin?"></textarea>
+
+    <label>5. Bugünkü duygu emojimi seç</label>
+    <div class="emoji-row" id="emojis"></div>
+
+    <label>6. Bugüne verdiğim yıldız puanı</label>
+    <div class="star-row" id="starBox"></div>
+
+    <button class="save-btn" type="submit">Kaydet ve Rozetimi Al 🏅</button>
+  </form>
+  <button class="back-btn backHomeBtn">Ana Ekrana Dön</button>
+</div>
+
+<div class="container hidden" id="panelPage">
+  <div class="top">
+    <h1>⚙️ Öğretmen İzleme Paneli</h1>
+    <button class="csv-btn" id="csvBtn">CSV Olarak İndir</button>
+  </div>
+  <label>Güne Göre Filtrele</label>
+  <select id="filter">
+    <option value="all">Tüm Günler</option>
+    <option value="1">1. Gün</option>
+    <option value="2">2. Gün</option>
+    <option value="3">3. Gün</option>
+    <option value="4">4. Gün</option>
+  </select>
+  <div id="summary" class="summary"></div>
+  <div id="records"></div>
+  <button class="danger-btn" id="clearBtn">Tüm Kayıtları Sil</button>
+  <button class="back-btn backHomeBtn">Ana Ekrana Dön</button>
+</div>
+
+<script>
+(function(){
+'use strict';
+const badges={1:'🚀 Gökyüzü Kaşifi',2:'🌿 Doğa Dedektifi',3:'💧 Su ve Kültür Elçisi',4:'🤖 Gelecek Tasarımcısı'};
+const $=id=>document.getElementById(id);
+let entries=[];
+try{entries=JSON.parse(localStorage.getItem('stemGunluguEntries')||'[]');}catch(e){entries=[];}
+function show(page){$('home').classList.add('hidden');$('formPage').classList.add('hidden');$('panelPage').classList.add('hidden');$(page).classList.remove('hidden');window.scrollTo(0,0);}
+function openForm(day,title){show('formPage');$('formTitle').textContent=day+'. Gün – '+title;$('day').value=day;$('dayTitle').value=title;$('student').value='';$('words').value='';$('info').value='';$('surprise').value='';$('emotion').value='';$('stars').value='';makeEmojis();makeStars();}
+function makeEmojis(){const arr=['😀','😍','😎','🤔','😴','😕'];const box=$('emojis');box.innerHTML='';arr.forEach(e=>{const b=document.createElement('button');b.type='button';b.className='emoji';b.textContent=e;b.addEventListener('click',()=>{ $('emotion').value=e; document.querySelectorAll('.emoji').forEach(x=>x.classList.remove('selected')); b.classList.add('selected');});box.appendChild(b);});}
+function makeStars(){const box=$('starBox');box.innerHTML='';for(let i=1;i<=5;i++){const b=document.createElement('button');b.type='button';b.className='star';b.textContent='★';b.addEventListener('click',()=>{ $('stars').value=String(i); document.querySelectorAll('.star').forEach((x,idx)=>x.classList.toggle('selected',idx<i));});box.appendChild(b);}}
+function doneDays(name){return [...new Set(entries.filter(x=>(x.student||'').trim().toLocaleLowerCase('tr-TR')===name.trim().toLocaleLowerCase('tr-TR')).map(x=>Number(x.day)))];}
+function saveEntry(ev){ev.preventDefault();if(!$('emotion').value||!$('stars').value){alert('Lütfen duygu emojisi ve yıldız puanı seç.');return;}const dayNum=Number($('day').value);const name=$('student').value.trim();const item={student:name,day:dayNum,dayTitle:$('dayTitle').value,words:$('words').value.trim(),info:$('info').value.trim(),surprise:$('surprise').value.trim(),emotion:$('emotion').value,stars:$('stars').value,badge:badges[dayNum],date:new Date().toLocaleDateString('tr-TR')};entries.push(item);localStorage.setItem('stemGunluguEntries',JSON.stringify(entries));const days=doneDays(name);let msg='Kaydın alındı! Rozetin: '+badges[dayNum];if(days.length>=4){msg+='\n🏆 STEM Ustası rozetini de kazandın!';}alert(msg);show('home');}
+function renderRecords(){const f=$('filter').value;const data=f==='all'?entries:entries.filter(x=>String(x.day)===f);$('summary').textContent='Toplam kayıt: '+data.length;const box=$('records');box.innerHTML='';if(!data.length){box.innerHTML='<p>Henüz kayıt yok.</p>';return;}data.slice().reverse().forEach(x=>{const div=document.createElement('div');div.className='record';div.innerHTML='<h3>👤 '+esc(x.student)+' <span style="float:right">🗓 '+esc(x.day)+'. Gün</span></h3>'+'<b>3 Kelime:</b> '+esc(x.words)+'<br>'+'<b>En İlginç Bilgi:</b> '+esc(x.info)+'<br>'+'<b>En Çok Şaşırtan:</b> '+esc(x.surprise)+'<br>'+'<b>Duygu:</b> '+esc(x.emotion)+' | <b>Yıldız:</b> '+('★'.repeat(Number(x.stars)||0))+'<br>'+'<span class="badge">'+esc(x.badge)+'</span><br>'+'<span class="small">Kayıt Tarihi: '+esc(x.date)+'</span>';box.appendChild(div);});}
+function downloadCSV(){const rows=[['Öğrenci','Gün','3 Kelime','İlginç Bilgi','Şaşırtan','Duygu','Yıldız','Rozet','Tarih']];entries.forEach(x=>rows.push([x.student,x.day,x.words,x.info,x.surprise,x.emotion,x.stars,x.badge,x.date]));const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='stem_gunlugu_kayitlari.csv';document.body.appendChild(a);a.click();a.remove();}
+function clearAll(){if(confirm('Tüm kayıtlar silinsin mi?')){entries=[];localStorage.removeItem('stemGunluguEntries');renderRecords();}}
+function esc(t){return String(t??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+document.querySelectorAll('.day-btn').forEach(btn=>btn.addEventListener('click',()=>openForm(Number(btn.dataset.day),btn.dataset.title)));
+$('openPanelBtn').addEventListener('click',()=>{show('panelPage');renderRecords();});
+document.querySelectorAll('.backHomeBtn').forEach(btn=>btn.addEventListener('click',()=>show('home')));
+$('entryForm').addEventListener('submit',saveEntry);
+$('filter').addEventListener('change',renderRecords);
+$('csvBtn').addEventListener('click',downloadCSV);
+$('clearBtn').addEventListener('click',clearAll);
+})();
+</script>
+</body>
+</html>
